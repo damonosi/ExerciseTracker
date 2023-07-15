@@ -5,8 +5,13 @@ const TotalAzi = async () => {
   const dataAzi = getTodayDate();
   const today = await getTodayCount(dataAzi);
   const { flotari, abdomene, gantere, sarituri } = today;
+  const total = sarituri + flotari + abdomene + gantere;
   return (
-    <div className="flex flex-col items-start justify-between pb-2 gap-5 px-4 border border-black">
+    <div
+      className={` ${total === 0 && "bg-red-300"} ${
+        total <= 100 ? "bg-yellow-300" : "bg-green-300"
+      } flex flex-col items-start justify-between pb-2 gap-5 px-4 border border-black`}
+    >
       <h1 className="border-b-2 py-2 px-4 rounded-b-xl border-black border-l-2 border-r-2">
         Exercitii facute azi
       </h1>
@@ -38,7 +43,7 @@ const TotalAzi = async () => {
         {" "}
         <p>total</p>
         <p>-</p>
-        <p>{sarituri + flotari + abdomene + gantere}</p>
+        <p>{total}</p>
       </span>
     </div>
   );
