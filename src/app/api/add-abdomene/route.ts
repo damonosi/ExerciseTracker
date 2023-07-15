@@ -41,7 +41,7 @@ export async function POST(req: Request) {
 
     await updateTotalAbdomene(nrAbdomene);
 
-    await db.disconnect();
+     db.disconnect();
     return NextResponse.json("new day");
   } else {
     await ZiDeExercitii.updateOne(filter, {
@@ -49,7 +49,7 @@ export async function POST(req: Request) {
     });
     await updateTotalAbdomene(nrAbdomene);
 
-    await db.disconnect();
+     db.disconnect();
     return NextResponse.json("updated day");
   }
 }

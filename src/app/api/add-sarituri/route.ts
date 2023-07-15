@@ -40,14 +40,14 @@ export async function POST(req: Request) {
     await ziNoua.save();
 
     await updateTotalSarituri(nrSarituri);
-    await db.disconnect();
+     db.disconnect();
     return new Response(JSON.stringify("zi noua creata"));
   } else {
     const updateDay = await ZiDeExercitii.updateOne(filter, {
       $inc: { sarituri: nrSarituri },
     });
     await updateTotalSarituri(nrSarituri);
-    await db.disconnect();
+     db.disconnect();
     return new Response(JSON.stringify(updateDay));
   }
 }
