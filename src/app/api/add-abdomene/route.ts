@@ -31,25 +31,23 @@ export async function POST(req: Request) {
   const filter = { data: dataAzi };
 
   await db.connect();
-  const azi = await ZiDeExercitii.findOne(filter);
-  if (!azi) {
-    const ziNoua = new ZiDeExercitii({
-      data: dataAzi,
-      abdomene: nrAbdomene,
-    });
-    await ziNoua.save();
-
-    await updateTotalAbdomene(nrAbdomene);
-
-     db.disconnect();
-    return NextResponse.json("new day");
-  } else {
-    await ZiDeExercitii.updateOne(filter, {
-      $inc: { abdomene: nrAbdomene },
-    });
-    await updateTotalAbdomene(nrAbdomene);
+   await updateTotalAbdomene(nrAbdomene);
+   const azi = await ZiDeExercitii.findOne(filter);
+   if (!azi) {
+     const ziNoua = new ZiDeExercitii({
+       data: dataAzi,
+       abdomene: nrAbdomene,
+     });
+     await ziNoua.save();
 
      db.disconnect();
-    return NextResponse.json("updated day");
-  }
+     return NextResponse.json("new day");
+   } else {
+     await ZiDeExercitii.updateOne(filter, {
+       $inc: { abdomene: nrAbdomene },
+     });
+
+     db.disconnect();
+     return NextResponse.json("updated day");
+   }
 }

@@ -31,23 +31,23 @@ export async function POST(req: Request) {
   const filter = { data: dataAzi };
 
   await db.connect();
-  const azi = await ZiDeExercitii.findOne(filter);
-  if (!azi) {
-    const ziNoua = new ZiDeExercitii({
-      data: dataAzi,
-      gantere: nrRidicari,
-    });
-    await ziNoua.save();
+      await updateTotalRidicari(nrRidicari);
+      const azi = await ZiDeExercitii.findOne(filter);
+      if (!azi) {
+        const ziNoua = new ZiDeExercitii({
+          data: dataAzi,
+          gantere: nrRidicari,
+        });
+        await ziNoua.save();
 
-    await updateTotalRidicari(nrRidicari);
-     db.disconnect();
-    return new Response(JSON.stringify("zi noua creata"));
-  } else {
-    const updateDay = await ZiDeExercitii.updateOne(filter, {
-      $inc: { gantere: nrRidicari },
-    });
-    await updateTotalRidicari(nrRidicari);
-     db.disconnect();
-    return new Response(JSON.stringify(updateDay));
-  }
+        db.disconnect();
+        return new Response(JSON.stringify("zi noua creata"));
+      } else {
+        await ZiDeExercitii.updateOne(filter, {
+          $inc: { gantere: nrRidicari },
+        });
+
+        db.disconnect();
+        return new Response(JSON.stringify("gantere updatate"));
+      }
 }
